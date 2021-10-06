@@ -17,6 +17,24 @@ func GetTodos(c *gin.Context) {
 	})
 }
 
+func GetTodoByID(c *gin.Context) {
+	id := c.Param("id")
+
+	for _, value := range listTodo {
+		if value.ID == id {
+			c.JSON(http.StatusOK, gin.H{
+				"todo": value,
+			})
+			return
+		} else {
+			c.JSON(http.StatusNotFound, gin.H{
+				"message": "Todo not found",
+			})
+			return
+		}
+	}
+}
+
 func CreateTodo(c *gin.Context) {
 
 	todo := models.Todo{}
