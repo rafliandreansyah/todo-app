@@ -10,7 +10,28 @@ import (
 )
 
 var listTodo = []models.Todo{}
+//var TodoDoc = []models.Todo{
+//	{
+//		ID: "1",
+//		Name: "Create app get weather",
+//		Complete: false,
+//	},
+//	{
+//		ID: "2",
+//		Name: "Create app post weather",
+//		Complete: true,
+//	},
+//}
 
+// GetTodos godoc
+// @Tags todo
+// @Summary Show All Todo
+// @Description get json array todo
+// @Accept json
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Success 200 {array} models.Todo
+// @Router / [get]
 func GetTodos(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"todos": listTodo,
