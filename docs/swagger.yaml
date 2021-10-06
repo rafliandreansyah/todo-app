@@ -83,4 +83,39 @@ paths:
       summary: Get todo by ID
       tags:
       - todo
+  /create-todo:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Post object todo with name and status complete
+      parameters:
+      - description: Add Todo
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Create todo
+      tags:
+      - todo
 swagger: "2.0"

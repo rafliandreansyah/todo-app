@@ -73,6 +73,19 @@ func GetTodoByID(c *gin.Context) {
 	}
 }
 
+// CreateTodo godoc
+// @Tags todo
+// @Summary Create todo
+// @Description Post object todo with name and status complete
+// @Accept json
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param todo body models.Todo true "Add Todo"
+// @Success 200 {object} models.Todo
+// @Failure 400 {object} utils.HTTPError
+// @Failure 500 {object} utils.HTTPError
+// @Failure default {object} utils.HTTPError
+// @Router /create-todo [post]
 func CreateTodo(c *gin.Context) {
 
 	todo := models.Todo{}
@@ -93,9 +106,6 @@ func CreateTodo(c *gin.Context) {
 	//Append to list todo
 	listTodo = append(listTodo, todo)
 
-	c.JSON(http.StatusCreated, gin.H{
-		"message": "Todo Created",
-		"todo":    todo,
-	})
+	c.JSON(http.StatusCreated, todo)
 
 }
