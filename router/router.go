@@ -10,6 +10,8 @@ func Router() *gin.Engine {
 	router := gin.Default()
 
 	router.GET("/", controllers.GetTodos)
+	router.GET("/:id", controllers.GetTodoByID)
+	router.POST("/create-todo", controllers.CreateTodo)
 
 	return router
 }

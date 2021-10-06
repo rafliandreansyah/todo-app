@@ -1,4 +1,121 @@
+definitions:
+  models.Todo:
+    properties:
+      complete:
+        example: true
+        type: boolean
+      id:
+        example: "1"
+        type: string
+      name:
+        example: Create POST user registration
+        type: string
+    type: object
+  utils.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact: {}
-paths: {}
+  description: This is API for CRUD todo app
+  title: Todo API With Swagger Documentation
+  version: "1.0"
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Get json array todo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+      summary: Show All Todo
+      tags:
+      - todo
+  /{id}:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Get object todo by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Get todo by ID
+      tags:
+      - todo
+  /create-todo:
+    post:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Post object todo with name and status complete
+      parameters:
+      - description: Add Todo
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Create todo
+      tags:
+      - todo
 swagger: "2.0"
