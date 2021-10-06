@@ -25,7 +25,7 @@ var doc = `{
     "paths": {
         "/": {
             "get": {
-                "description": "get json array todo",
+                "description": "Get json array todo",
                 "consumes": [
                     "application/json",
                     "application/x-www-form-urlencoded"
@@ -49,6 +49,63 @@ var doc = `{
                     }
                 }
             }
+        },
+        "/{id}": {
+            "get": {
+                "description": "Get object todo by id",
+                "consumes": [
+                    "application/json",
+                    "application/x-www-form-urlencoded"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "todo"
+                ],
+                "summary": "Get todo by ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Todo"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    },
+                    "default": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/utils.HTTPError"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -56,13 +113,29 @@ var doc = `{
             "type": "object",
             "properties": {
                 "complete": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "example": true
                 },
                 "id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "1"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Create POST user registration"
+                }
+            }
+        },
+        "utils.HTTPError": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "example": 400
+                },
+                "message": {
+                    "type": "string",
+                    "example": "status bad request"
                 }
             }
         }

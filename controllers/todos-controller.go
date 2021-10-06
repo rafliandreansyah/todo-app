@@ -1,10 +1,12 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
 	"todo-app/models"
+	"todo-app/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +28,7 @@ var listTodo = []models.Todo{}
 // GetTodos godoc
 // @Tags todo
 // @Summary Show All Todo
-// @Description get json array todo
+// @Description Get json array todo
 // @Accept json
 // @Accept x-www-form-urlencoded
 // @Produce json
@@ -38,9 +40,26 @@ func GetTodos(c *gin.Context) {
 	})
 }
 
+// GetTodoByID godoc
+// @Tags todo
+// @Summary Get todo by ID
+// @Description Get object todo by id
+// @Accept json
+// @Accept x-www-form-urlencoded
+// @Produce json
+// @Param id path string true "ID"
+// @Success 200 {object} models.Todo
+// @Failure 400,404 {object} utils.HTTPError
+// @Failure 500 {object} utils.HTTPError
+// @Failure default {object} utils.HTTPError
+// @Router /{id} [get]
 func GetTodoByID(c *gin.Context) {
 	id := c.Param("id")
 
+	if len(listTodo) < 1 {
+		utils.NewError(c, http.StatusNotFound, errors.New("todo not found"))
+		return
+	}
 	for _, value := range listTodo {
 		if value.ID == id {
 			c.JSON(http.StatusOK, gin.H{
@@ -48,9 +67,7 @@ func GetTodoByID(c *gin.Context) {
 			})
 			return
 		} else {
-			c.JSON(http.StatusNotFound, gin.H{
-				"message": "Todo not found",
-			})
+			utils.NewError(c, http.StatusNotFound, errors.New("todo not found"))
 			return
 		}
 	}

@@ -2,10 +2,22 @@ definitions:
   models.Todo:
     properties:
       complete:
+        example: true
         type: boolean
       id:
+        example: "1"
         type: string
       name:
+        example: Create POST user registration
+        type: string
+    type: object
+  utils.HTTPError:
+    properties:
+      code:
+        example: 400
+        type: integer
+      message:
+        example: status bad request
         type: string
     type: object
 host: localhost:8080
@@ -20,7 +32,7 @@ paths:
       consumes:
       - application/json
       - application/x-www-form-urlencoded
-      description: get json array todo
+      description: Get json array todo
       produces:
       - application/json
       responses:
@@ -31,6 +43,44 @@ paths:
               $ref: '#/definitions/models.Todo'
             type: array
       summary: Show All Todo
+      tags:
+      - todo
+  /{id}:
+    get:
+      consumes:
+      - application/json
+      - application/x-www-form-urlencoded
+      description: Get object todo by id
+      parameters:
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/utils.HTTPError'
+      summary: Get todo by ID
       tags:
       - todo
 swagger: "2.0"
