@@ -12,6 +12,8 @@ func Router() *gin.Engine {
 	router.GET("/", controllers.GetTodos)
 	router.GET("/:id", controllers.GetTodoByID)
 	router.POST("/create-todo", controllers.CreateTodo)
+	router.PUT("/edit-todo/:id", controllers.EditTodo)
+	router.DELETE("/delete/:id", controllers.DeleteTodoById)
 
 	return router
 }

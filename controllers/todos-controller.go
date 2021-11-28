@@ -109,3 +109,45 @@ func CreateTodo(c *gin.Context) {
 	c.JSON(http.StatusCreated, todo)
 
 }
+
+func EditTodo(c *gin.Context){
+
+	id := c.Param("id")
+	todo := models.Todo{}
+
+	headerContentType := c.Request.Header.Get("Content-Type")
+
+	if headerContentType == "application/json" {
+		c.ShouldBindJSON(&todo)
+	} else{
+		c.ShouldBind(&todo)
+	}
+
+	for i, v := range listTodo{
+		if v.ID == id {
+			listTodo[i].Name = todo.Name
+			listTodo[i].Complete = todo.Complete
+			c.JSON(http.StatusOK, listTodo)
+			return
+		}
+	}
+
+	utils.NewError(c, http.StatusNotFound, errors.New(fmt.Sprintf("todo with id %v not found", id)))
+
+}
+
+func DeleteTodoById(c *gin.Context){
+
+	id := c.Param("id")
+
+	for i, v := range listTodo{
+		if v.ID == id {
+			listTodo = append(listTodo[:i], listTodo[i+1:]...)
+			c.JSON(http.StatusOK, listTodo)
+			return
+		}
+	}
+
+	utils.NewError(c, http.StatusNotFound, errors.New(fmt.Sprintf("todo with id %v not found", id)))
+
+}
